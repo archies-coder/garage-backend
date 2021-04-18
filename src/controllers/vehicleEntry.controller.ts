@@ -1,4 +1,4 @@
-import vehicleEntryModel = require('../models/vehicleEntry.model')
+import vehicleEntryModel from '../models/vehicleEntry.model'
 import isEmpty = require('../utils/isEmpty')
 
 module.exports = {

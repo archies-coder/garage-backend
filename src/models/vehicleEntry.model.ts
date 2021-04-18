@@ -1,7 +1,6 @@
-import mongoose = require('mongoose')
-const { model, Schema } = mongoose
+import { Model, model, Schema } from 'mongoose'
 
-const visitorSchema = new Schema({
+const vehicleEntrySchema = new Schema({
   vehicleImagePath: {
     type: String,
   },
@@ -17,7 +16,7 @@ const visitorSchema = new Schema({
   remark: {
     type: String,
   },
-  visitorCount: {
+  vehicleEntryCount: {
     type: String,
   },
   vehicleNo: {
@@ -40,6 +39,6 @@ const visitorSchema = new Schema({
   },
 })
 
-const visitorModel = model('Visitor', visitorSchema)
+const vehicleEntryModel: Model<any> = model('VehicleEntry', vehicleEntrySchema)
 
-module.exports = visitorModel
+export default vehicleEntryModel
