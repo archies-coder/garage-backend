@@ -1,7 +1,7 @@
 import express = require('express')
 //import authMiddleware = require('../middlewares/auth.middleware')
 const router = express.Router()
-import visitorController = require('../controllers/vehicleEntry.controller')
+import vehicleEntryController = require('../controllers/vehicleEntry.controller')
 import multer = require('multer')
 import crypto = require('crypto')
 import mime = require('mime')
@@ -30,9 +30,9 @@ const fields = [{ name: 'vehicleImage', maxCount: 1 }]
 const imageUploads = upload.fields(fields)
 
 // Check In (Create Visitor)
-router.post('/product/reception/user/checkin', /*authMiddleware,*/ imageUploads, visitorController.checkIn)
-router.get('/product/reception/checkin/user/data' /*authMiddleware,*/, visitorController.getVisitors)
-router.post('/product/reception/user/checkout' /*authMiddleware,*/, visitorController.checkOut)
-router.get('/product/reception/meeting/purpose/data' /*authMiddleware,*/, visitorController.getPurpose)
+router.post('/product/reception/user/checkin', /*authMiddleware,*/ imageUploads, vehicleEntryController.checkIn)
+router.get('/product/reception/checkin/user/data' /*authMiddleware,*/, vehicleEntryController.getVehic)
+router.post('/product/reception/user/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
+router.get('/product/reception/meeting/purpose/data' /*authMiddleware,*/, vehicleEntryController.getPurpose)
 
 module.exports = router
