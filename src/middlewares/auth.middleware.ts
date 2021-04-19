@@ -1,27 +1,26 @@
-import jwt = require('jsonwebtoken')
-import userModel = require('../models/user.model.js')
+import { NextFunction, Request, Response } from 'express'
+import jwt from 'jsonwebtoken'
+import userModel from '../models/user.model.js'
 
-const authMiddleware = async (req: any, next: any) => {
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token = req.query.token
+    const token: string | undefined = req.query.token?.toString()
     if (token) {
-      const secret: any = process.env.JWT_SECRET
+      const secret: string = process.env.JWT_SECRET || 'sometopsecretstring'
       const verificationResponse = jwt.verify(token, secret)
-      const userId = verificationResponse._id
+      const userId = (verificationResponse as any)._id
       const findUser = await userModel.findById(userId)
 
       if (findUser) {
-        req.user = findUser
+        ;(req as any).user = findUser
         next()
       } else {
-        next(new Error('Wrong authentication token'))
+        next(new Error('No User Found'))
       }
     } else {
       next(new Error('Authentication token missing'))
     }
   } catch (error) {
-    next(new Error('Wrong authentication token'))
+    next(new Error('Something Went Wrong'))
   }
 }
-
-module.exports = authMiddleware

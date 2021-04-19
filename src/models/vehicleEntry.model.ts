@@ -40,6 +40,21 @@ const vehicleEntrySchema: Schema = new Schema(
   { timestamps: true },
 )
 
-const vehicleEntryModel: Model<any> = model('VehicleEntry', vehicleEntrySchema)
+interface IVehicleEntryModel extends Document {
+  vehicleImagePath: string
+  customerName: string
+  customerMobile: string
+  purpose: string
+  remark: string
+  vehicleEntryCount: string
+  vehicleNo: string
+  vehicleModel: string
+  vehicleType: string
+  checkOutBy: string
+  intime: string
+  outime: string
+}
+
+const vehicleEntryModel: Model<IVehicleEntryModel> = model('VehicleEntry', vehicleEntrySchema)
 
 export default vehicleEntryModel

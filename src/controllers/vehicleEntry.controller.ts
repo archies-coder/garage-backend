@@ -1,7 +1,7 @@
 import vehicleEntryModel from '../models/vehicleEntry.model'
-import isEmpty = require('../utils/isEmpty')
+import isEmpty from '../utils/isEmpty'
 
-module.exports = {
+export = {
   checkIn: (req: any, res: any) => {
     const vehicleEntry = req.body
     vehicleEntry.vehicleImagePath = req.files['vehicleImage'] && req.files['vehicleImage'][0].filename
@@ -9,6 +9,7 @@ module.exports = {
     const createdVehicleEntry = vehicleEntryModel.create(vehicleEntry)
     return res.send(createdVehicleEntry)
   },
+
   getVehicleEntrys: async (req: any, res: any) => {
     const { page, count, vehicleEntry, purpose } = req.query
     const data = await vehicleEntryModel.find({}).sort({ _id: -1 })
@@ -32,6 +33,7 @@ module.exports = {
       data: filteredData,
     })
   },
+
   checkOut: async (req: any, res: any) => {
     const { checkin_id, user } = req.body
     const update = { checkOutBy: user, outime: new Date().toISOString() }
