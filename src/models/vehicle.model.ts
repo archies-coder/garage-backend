@@ -1,16 +1,32 @@
 import { Document, Model, model, Schema } from 'mongoose'
 
+interface ICustomer extends Document {
+  customerName: string
+  customerMobile: string
+}
+
+const customerSchema: Schema<ICustomer> = new Schema({
+  customerName: {
+    type: String,
+    required: true,
+  },
+  customerMobile: {
+    type: Number,
+  },
+  customerAddress: {
+    type: String,
+  },
+})
+
 export interface IVehicle extends Document {
   vehicleNo: string
   vehicleModel: string
   vehicleMake: string
   vehicleType: string
   vehicleImagePath: string
-  customerName: string
-  customerMobile: string
 }
 
-const vehicleSchema: Schema = new Schema(
+const vehicleSchema: Schema<IVehicle> = new Schema(
   {
     vehicleNo: {
       type: String,
@@ -28,11 +44,8 @@ const vehicleSchema: Schema = new Schema(
     vehicleImagePath: {
       type: String,
     },
-    customerName: {
-      type: String,
-    },
-    customerMobile: {
-      type: String,
+    customer: {
+      type: customerSchema,
     },
   },
   { timestamps: true },
