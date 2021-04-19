@@ -1,11 +1,12 @@
-import express = require('express')
+import express from 'express'
 //import authMiddleware = require('../middlewares/auth.middleware')
+import {} from '../middlewares/auth.middleware'
 const router = express.Router()
-import vehicleEntryController = require('../controllers/vehicleEntry.controller')
-import multer = require('multer')
-import crypto = require('crypto')
-import mime = require('mime')
-import path = require('path')
+import vehicleEntryController from '../controllers/vehicleEntry.controller'
+import multer from 'multer'
+import crypto from 'crypto'
+import mime from 'mime'
+import path from 'path'
 
 const storage = multer.diskStorage({
   destination: path.join('uploads/'),
@@ -31,8 +32,8 @@ const imageUploads = upload.fields(fields)
 
 // Check In (Create Visitor)
 router.post('/product/reception/user/checkin', /*authMiddleware,*/ imageUploads, vehicleEntryController.checkIn)
-router.get('/product/reception/checkin/user/data' /*authMiddleware,*/, vehicleEntryController.getVehic)
+router.get('/product/reception/checkin/user/data' /*authMiddleware,*/, vehicleEntryController.getVehicleEntrys)
 router.post('/product/reception/user/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
 router.get('/product/reception/meeting/purpose/data' /*authMiddleware,*/, vehicleEntryController.getPurpose)
 
-module.exports = router
+export default router

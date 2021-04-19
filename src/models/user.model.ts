@@ -1,5 +1,4 @@
-import mongoose = require('mongoose')
-const { model, Schema } = mongoose
+import { Model, model, Schema, Document } from 'mongoose'
 
 const userSchema = new Schema({
   username: {
@@ -20,6 +19,13 @@ const userSchema = new Schema({
   },
 })
 
-const userModel = model('User', userSchema)
+interface IUserModel extends Document {
+  username: string
+  password: string
+  usertype?: string
+  name: string
+}
 
-module.exports = userModel
+const userModel: Model<IUserModel> = model('User', userSchema)
+
+export default userModel
