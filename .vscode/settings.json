@@ -5,5 +5,11 @@
   //   "editor.formatOnSave": false,
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.exclude": {
+    ".vscode/": true,
+    "**/yarn-error.log": true,
+    "**/yarn.lock": true,
+    "node_modules/": true
   }
 }
