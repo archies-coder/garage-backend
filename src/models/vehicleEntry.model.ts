@@ -4,8 +4,6 @@ import { Document, Model, model, Schema } from 'mongoose'
 export interface IVehicleEntry extends Document {
   purpose: string
   remark: string
-  vehicleEntryCount: string
-  checkOutBy: string
   intime: string
   outime: string
   vehicleId: IVehicle['_id']
@@ -24,12 +22,6 @@ const vehicleEntrySchema: Schema = new Schema(
     remark: {
       type: String,
     },
-    vehicleEntryCount: {
-      type: String,
-    },
-    checkOutBy: {
-      type: String,
-    },
     intime: {
       type: String,
     },
@@ -40,21 +32,6 @@ const vehicleEntrySchema: Schema = new Schema(
   { timestamps: true },
 )
 
-interface IVehicleEntryModel extends Document {
-  vehicleImagePath: string
-  customerName: string
-  customerMobile: string
-  purpose: string
-  remark: string
-  vehicleEntryCount: string
-  vehicleNo: string
-  vehicleModel: string
-  vehicleType: string
-  checkOutBy: string
-  intime: string
-  outime: string
-}
-
-const vehicleEntryModel: Model<IVehicleEntryModel> = model('VehicleEntry', vehicleEntrySchema)
+const vehicleEntryModel: Model<IVehicleEntry> = model('VehicleEntry', vehicleEntrySchema)
 
 export default vehicleEntryModel

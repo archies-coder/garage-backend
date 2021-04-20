@@ -1,36 +1,57 @@
+import { Request, Response } from 'express'
 import vehicleEntryModel from '../models/vehicleEntry.model'
-import isEmpty from '../utils/isEmpty'
+import { createNewVehicle } from '../services/vehicle.service'
+import { checkVehicleExists, doCheckIn, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
+import { IVehicleDTO } from './../dtos/vehicle.dtos'
+import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
+import { IVehicle } from './../models/vehicle.model'
 
 export = {
-  checkIn: (req: any, res: any) => {
-    const vehicleEntry = req.body
-    vehicleEntry.vehicleImagePath = req.files['vehicleImage'] && req.files['vehicleImage'][0].filename
-    console.log(vehicleEntry)
-    const createdVehicleEntry = vehicleEntryModel.create(vehicleEntry)
-    return res.send(createdVehicleEntry)
+  checkIn: async (req: Request, res: Response) => {
+    const vehicleEntry: IVehicleEntryDTO & IVehicleDTO = req.body
+    if (vehicleEntry) {
+      const { vehicleNo, vehicleImagePath, vehicleMake, vehicleModel, vehicleType, purpose, remark, intime } = vehicleEntry
+      // Check if Vehicle already Exists
+      const existingVehicle = await checkVehicleExists(vehicleNo)
+      if (existingVehicle) {
+        try {
+          const createdVehicleEntry = await doCheckIn({
+            vehicleId: existingVehicle._id,
+            purpose,
+            remark,
+            intime,
+          })
+          if (createdVehicleEntry) return res.send(createdVehicleEntry)
+        } catch (error) {
+          res.status(401).send(error.message)
+        }
+      } else {
+        const newVehicle: IVehicle = await createNewVehicle({
+          vehicleNo,
+          vehicleImagePath,
+          vehicleMake,
+          vehicleModel,
+          vehicleType,
+        })
+        const vehicleId = newVehicle._id
+        const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime })
+        return res.send(createdVehicleEntry)
+      }
+    } else {
+      throw new Error('No Request Body')
+    }
   },
 
-  getVehicleEntrys: async (req: any, res: any) => {
-    const { page, count, vehicleEntry, purpose } = req.query
-    const data = await vehicleEntryModel.find({}).sort({ _id: -1 })
-    const filter = (data: any) => {
-      const p = parseInt(page)
-      const c = parseInt(count)
-      const skip = p * c
-      let ans = data.slice(skip, skip + c)
-
-      if (!isEmpty(vehicleEntry)) {
-        ans = ans.filter((el: any) => el.name.toLowerCase().startsWith(vehicleEntry.toLowerCase()))
-      }
-      if (!isEmpty(purpose)) {
-        ans = ans.filter((el: any) => el.purpose === purpose)
-      }
-      return ans
+  getVehicleEntrys: async (req: Request, res: Response) => {
+    let ans: any
+    if (Object.keys(req.query).length > 0) {
+      ans = await getFilteredVehicleEntries(req.query)
+    } else {
+      ans = await getFilteredVehicleEntries()
     }
-    const filteredData = filter(data)
     res.send({
-      totalCount: data.length,
-      data: filteredData,
+      totalCount: ans.totalCount,
+      data: ans.data,
     })
   },
 
@@ -41,6 +62,7 @@ export = {
     await vehicleEntryModel.findByIdAndUpdate(checkin_id, update)
     res.send({ checkOut: 'Success' })
   },
+
   getPurpose: async (req: any, res: any) => {
     const vehicleEntryPurpose = await vehicleEntryModel.distinct('purpose')
     const purposeArr = [...vehicleEntryPurpose].flat()
