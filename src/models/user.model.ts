@@ -13,8 +13,12 @@ const userSchema = new Schema({
   usertype: {
     type: String,
   },
-  name: {
+  email: {
     type: String,
+    required: true,
+  },
+  mobile: {
+    type: Number,
     required: true,
   },
 })
