@@ -6,6 +6,6 @@ const router: Router = Router()
 
 const baseUrl = '/garage/v1.0'
 
-router.get(`${baseUrl}/vehicles`, authMiddleware, getVehicles)
+router.get(`${baseUrl}/vehicles`, getVehicles)
 
 export default router
