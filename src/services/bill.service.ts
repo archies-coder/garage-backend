@@ -13,12 +13,9 @@ const fetchBillByID = async (id: string) => {
 const createBillAndUpdateVehicleEntry = async (input: INewBillDTO) => {
   const { name, cost, vehicleEntryId } = input
   const newBill = await billModel.create({ name, cost })
-  const updatedVehiclEntry = await vehicleEntryModel.findOneAndUpdate(
-    { id: vehicleEntryId },
-    {
-      $push: { billInfo: newBill.id },
-    },
-  )
+  const updatedVehiclEntry = await vehicleEntryModel.findByIdAndUpdate(vehicleEntryId, {
+    $push: { billInfo: newBill.id },
+  })
   return updatedVehiclEntry
 }
 

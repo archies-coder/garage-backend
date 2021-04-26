@@ -4,6 +4,7 @@ import { connect } from 'mongoose'
 import { dbConnection } from './database/index'
 import VehicleRoutes from './routes/vehicle.routes'
 import VehicleEntryRoutes from './routes/vehicleEntry.routes'
+import BillRoutes from './routes/bill.routes'
 import AuthRoutes from './routes/auth.routes'
 import { stream } from './utils/logger.js'
 import morgan from 'morgan'
@@ -29,6 +30,7 @@ app.use(morgan('dev', { stream }))
 app.use(AuthRoutes)
 app.use(VehicleRoutes)
 app.use(VehicleEntryRoutes)
+app.use(BillRoutes)
 
 connect(dbConnection.url, dbConnection.options)
   .then(() => {
