@@ -31,9 +31,8 @@ const fields = [{ name: 'vehicleImage', maxCount: 1 }]
 const imageUploads = upload.fields(fields)
 
 // Check In (Create Visitor)
-router.post('/product/reception/user/checkin', /*authMiddleware,*/ vehicleEntryController.checkIn)
-router.get('/product/reception/checkin/user/data' /*authMiddleware,*/, vehicleEntryController.getVehicleEntrys)
-router.post('/product/reception/user/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
-router.get('/product/reception/meeting/purpose/data' /*authMiddleware,*/, vehicleEntryController.getPurpose)
+router.post('/garage/v1.0/checkin', /*authMiddleware,*/ vehicleEntryController.checkIn)
+router.get('/garage/v1.0/vehicle-entries' /*authMiddleware,*/, vehicleEntryController.getVehicleEntrys)
+router.post('/garage/v1.0/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
 
 export default router

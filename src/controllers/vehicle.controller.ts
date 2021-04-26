@@ -15,6 +15,7 @@ const postVehicle = async (req: Request, res: Response) => {
   const vehicleInput: IVehicleDTO = req.body
   if (!vehicleInput) return res.status(422).send('No Requst Body')
   try {
+    // TODO check if already exists, send 409 (CONFLICT) if so
     const vehicle = await createNewVehicle(vehicleInput)
     res.send({
       data: vehicle,

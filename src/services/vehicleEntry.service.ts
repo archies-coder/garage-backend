@@ -1,3 +1,4 @@
+import { IVehicleEntry } from './../models/vehicleEntry.model'
 import { IVehicle } from './../models/vehicle.model'
 import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import vehicleEntryModel from '../models/vehicleEntry.model'
@@ -11,12 +12,13 @@ interface IFilterQueries {
   purpose?: string
 }
 
-const fetchAll = async (order: string) => {
-  return order === 'DESC'
-    ? await VehicleModel.find({}).sort({ _id: -1 })
-    : order === 'ASC'
-    ? await VehicleModel.find({}).sort({ _id: 1 })
-    : await VehicleModel.find({})
+const fetchAll = async (order?: string) => {
+  // return order === 'DESC'
+  //   ? await VehicleModel.find({}).sort({ _id: -1 })
+  //   : order === 'ASC'
+  //   ? await VehicleModel.find({}).sort({ _id: 1 })
+  //   : await VehicleModel.find({})
+  return await vehicleEntryModel.find()
 }
 
 const doCheckIn = async (entry: IVehicleEntryDTO) => {
@@ -36,29 +38,38 @@ const checkVehicleExists = async (number: string) => {
   return doc
 }
 
+const filterVehicleEntries = (data: IVehicleEntry[], { page, count, vehicleEntry, purpose }: any) => {
+  const p = page && parseInt(page)
+  const c = count && parseInt(count)
+  const skip = (p as number) * (c as number)
+  let ans = data.slice(skip, skip + (c as number))
+
+  if (!isEmpty(vehicleEntry)) {
+    ans = ans.filter((el: any) => el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()))
+  }
+  if (!isEmpty(purpose)) {
+    ans = ans.filter((el: any) => el.purpose === purpose)
+  }
+  return ans
+}
+
 const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
   if (queries) {
     const { page, count, vehicleEntry, purpose } = queries
-    const data = await fetchAll('DESC')
-    const filter = (data: IVehicle[]) => {
-      const p = page && parseInt(page)
-      const c = count && parseInt(count)
-      const skip = (p as number) * (c as number)
-      let ans = data.slice(skip, skip + (c as number))
-
-      if (!isEmpty(vehicleEntry)) {
-        ans = ans.filter((el: any) => el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()))
-      }
-      if (!isEmpty(purpose)) {
-        ans = ans.filter((el: any) => el.purpose === purpose)
-      }
-      return ans
-    }
+    const data = await fetchAll()
     return {
       totalCount: data.length,
-      data: filter(data),
+      data: filterVehicleEntries(data, { page, count, vehicleEntry, purpose }),
     }
   }
 }
 
-export { doCheckIn, checkVehicleExists, getFilteredVehicleEntries }
+const getAllVehicleEntries = async () => {
+  const data = await vehicleEntryModel.find()
+  return {
+    totalCount: data.length,
+    data: data,
+  }
+}
+
+export { doCheckIn, checkVehicleExists, getFilteredVehicleEntries, getAllVehicleEntries }

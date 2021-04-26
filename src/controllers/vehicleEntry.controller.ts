@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import { createNewVehicle } from '../services/vehicle.service'
-import { checkVehicleExists, doCheckIn, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
+import { checkVehicleExists, doCheckIn, getAllVehicleEntries, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
 import { IVehicleDTO } from './../dtos/vehicle.dtos'
 import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import { IVehicle } from './../models/vehicle.model'
@@ -43,15 +43,15 @@ export = {
   },
 
   getVehicleEntrys: async (req: Request, res: Response) => {
-    let ans: any
+    let ans
     if (Object.keys(req.query).length > 0) {
       ans = await getFilteredVehicleEntries(req.query)
     } else {
-      ans = await getFilteredVehicleEntries()
+      ans = await getAllVehicleEntries()
     }
     res.send({
-      totalCount: ans.totalCount,
-      data: ans.data,
+      totalCount: ans ? ans.totalCount : 0,
+      data: ans ? ans.data : [],
     })
   },
 
