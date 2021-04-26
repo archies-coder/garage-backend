@@ -3,5 +3,5 @@ export interface IVehicleDTO {
   vehicleModel: string
   vehicleMake: string
   vehicleType: string
-  vehicleImagePath: string
+  vehicleImagePath?: string
 }

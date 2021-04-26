@@ -1,4 +1,3 @@
-import { baseUrl } from './../app'
 import { Router } from 'express'
 import { doLogin, doRegister } from '../controllers/auth.controller'
 

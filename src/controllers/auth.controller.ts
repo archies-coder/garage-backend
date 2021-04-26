@@ -4,12 +4,14 @@ import { createUser, login } from '../services/auth.service'
 
 const doLogin = async (req: Request, res: Response) => {
   const loginInput: ILoginDTO = req.body
+  console.log(loginInput)
   try {
-    const token = await login(loginInput)
+    const data = await login(loginInput)
     res.send({
-      token,
+      ...data,
     })
   } catch (error) {
+    console.log(error)
     return res.status(error.status).send(error)
   }
 }

@@ -12,6 +12,10 @@ const app: Application = express()
 
 export const baseUrl = '/garage/v1.0'
 
+app.get('/', (req, res) => {
+  res.send('Hello')
+})
+
 // Middlewares
 app.use(
   express.urlencoded({
@@ -19,12 +23,12 @@ app.use(
   }),
 )
 app.use(express.json())
-app.use(morgan('dev', { stream }))
 app.use(cors())
+app.use(morgan('dev', { stream }))
 
+app.use(AuthRoutes)
 app.use(VehicleRoutes)
 app.use(VehicleEntryRoutes)
-app.use(AuthRoutes)
 
 connect(dbConnection.url, dbConnection.options)
   .then(() => {

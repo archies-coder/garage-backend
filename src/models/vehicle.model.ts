@@ -23,7 +23,7 @@ export interface IVehicle extends Document {
   vehicleModel: string
   vehicleMake: string
   vehicleType: string
-  vehicleImagePath: string
+  vehicleImagePath?: string
 }
 
 const vehicleSchema: Schema<IVehicle> = new Schema(

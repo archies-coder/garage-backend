@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import HttpException from '../exceptions/HttpException'
 
 async function login(params: ILoginDTO) {
+  console.log(params)
   const user = await userModel.findOne({ username: params.username })
   if (!user) {
     return new HttpException('Invalid Credentials', 401)
@@ -21,7 +22,7 @@ async function login(params: ILoginDTO) {
     'secret',
     { expiresIn: '7d' },
   )
-  return token
+  return { token, userType: user.usertype, username: user.username }
 }
 
 async function createUser(params: IRegisterDTO) {
