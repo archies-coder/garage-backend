@@ -1,6 +1,6 @@
 import { IVehicle } from '../models/vehicle.model'
 import { NextFunction, Request, Response } from 'express'
-import { fetchAll } from '../services/vehicle.service'
+import { createNewVehicle, fetchAll } from '../services/vehicle.service'
 import { IVehicleDTO } from '../dtos/vehicle.dtos'
 
 const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +12,16 @@ const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const postVehicle = async (req: Request, res: Response) => {
-  const vehicle: IVehicleDTO = req.body
+  const vehicleInput: IVehicleDTO = req.body
+  if (!vehicleInput) return res.status(422).send('No Requst Body')
+  try {
+    const vehicle = await createNewVehicle(vehicleInput)
+    res.send({
+      data: vehicle,
+    })
+  } catch (error) {
+    return res.status(error.status).send(error)
+  }
 }
 
 export { getVehicles, postVehicle }
