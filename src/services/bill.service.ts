@@ -16,7 +16,10 @@ const createBillAndUpdateVehicleEntry = async (input: INewBillDTO) => {
   const updatedVehiclEntry = await vehicleEntryModel.findByIdAndUpdate(vehicleEntryId, {
     $push: { billInfo: newBill.id },
   })
-  return updatedVehiclEntry
+  if (!updatedVehiclEntry) {
+    return new Error('Failed to update vehicle entry: ')
+  }
+  return { newBillId: newBill.id, updatedVehicleEntry: updatedVehiclEntry?.id }
 }
 
 export { fetchAllBills, fetchBillByID, createBillAndUpdateVehicleEntry }
