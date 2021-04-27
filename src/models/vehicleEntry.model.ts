@@ -1,4 +1,4 @@
-import { BillSchema, IBill } from './bill.model'
+//import { BillSchema, IBill } from './bill.model'
 import { IVehicle } from './vehicle.model'
 import { Document, Model, model, Schema } from 'mongoose'
 
@@ -8,7 +8,7 @@ export interface IVehicleEntry extends Document {
   intime: string
   outime: string
   vehicleId: IVehicle['_id']
-  billInfo: IBill['_id']
+  // billInfo: IBill['_id']
 }
 
 const vehicleEntrySchema: Schema = new Schema(
@@ -30,7 +30,7 @@ const vehicleEntrySchema: Schema = new Schema(
     outime: {
       type: String,
     },
-    billInfo: [{ type: Schema.Types.ObjectId, ref: 'Bill' }],
+    // billInfo: [{ type: Schema.Types.ObjectId, ref: 'Bill' }],
   },
   { timestamps: true },
 )
