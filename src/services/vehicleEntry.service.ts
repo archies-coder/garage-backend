@@ -65,10 +65,11 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const data = await vehicleEntryModel.find()
+  const data1 = await vehicleEntryModel.find()
+  const data2 = await VehicleModel.find()
   return {
-    totalCount: data.length,
-    data: data,
+    totalCount: data1.length,
+    data: { data1, data2 },
   }
 }
 
