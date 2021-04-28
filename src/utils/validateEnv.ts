@@ -1,5 +1,4 @@
-const { cleanEnv, str, port } = require("envalid");
-
+import { cleanEnv, str, port } from 'envalid'
 
 const validateEnv = () => {
   cleanEnv(process.env, {
@@ -10,7 +9,7 @@ const validateEnv = () => {
     MONGO_DATABASE: str(),
     JWT_SECRET: str(),
     // BOOK_RENTAL_SERVICE_URL: str(),
-  });
-};
+  })
+}
 
-module.exports = validateEnv;
+module.exports = validateEnv
