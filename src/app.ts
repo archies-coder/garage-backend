@@ -8,6 +8,9 @@ import BillRoutes from './routes/bill.routes'
 import AuthRoutes from './routes/auth.routes'
 import { stream } from './utils/logger.js'
 import morgan from 'morgan'
+import * as dotenv from 'dotenv'
+
+dotenv.config()
 
 const app: Application = express()
 
@@ -40,6 +43,6 @@ connect(dbConnection.url, dbConnection.options)
     console.log(`🔴 Unable to connect to the database: ${error}.`)
   })
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 8080
 
 app.listen(PORT, () => console.log(`::::Server Running at port ${PORT}`))

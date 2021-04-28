@@ -14,67 +14,67 @@
     "**/package-lock.json": true
   },
   "editor.fontFamily": "Operator Mono, 'Fira Code iScript','Firicico', Consolas, Menlo, Monaco, 'Courier New', monospace",
-    "editor.fontSize": 15,
-    "editor.lineHeight": 26,
-    "editor.letterSpacing": 0.4,
-    // "files.trimTrailingWhitespace": true,
-    "editor.fontWeight": "300",
-    "editor.cursorStyle": "line",
-    "editor.cursorWidth": 3,
-    "editor.cursorBlinking": "blink",
-    "editor.renderWhitespace": "all",
-    "editor.formatOnPaste": true,
-    "editor.fontLigatures": true,
-    "editor.tokenColorCustomizations": {
-  "textMateRules": [
-    {
-      "scope": [
-        //following will be in italic (=FlottFlott)
-        "comment",
-        "constant", //String, Number, Boolean…, this, super
-        "storage.modifier", //static keyword
-      ],
-      "settings": {
-        "fontStyle": "italic",
-        // "foreground": "#0084d6"
+  "editor.fontSize": 15,
+  "editor.lineHeight": 26,
+  "editor.letterSpacing": 0.4,
+  // "files.trimTrailingWhitespace": true,
+  "editor.fontWeight": "300",
+  "editor.cursorStyle": "line",
+  "editor.cursorWidth": 3,
+  "editor.cursorBlinking": "blink",
+  "editor.renderWhitespace": "all",
+  "editor.formatOnPaste": true,
+  "editor.fontLigatures": true,
+  "editor.tokenColorCustomizations": {
+    "textMateRules": [
+      {
+        "scope": [
+          //following will be in italic (=FlottFlott)
+          "comment",
+          "constant", //String, Number, Boolean…, this, super
+          "storage.modifier" //static keyword
+        ],
+        "settings": {
+          "fontStyle": "italic"
+          // "foreground": "#0084d6"
+        }
+      },
+      {
+        "scope": [
+          "keyword", //import, export, return…
+          // "entity.name.type.class", //class names
+          "storage.type.class.js" //class keyword
+        ],
+        "settings": {
+          // "foreground": "#FF0000",
+          "fontStyle": "italic bold"
+        }
+      },
+      {
+        "scope": [
+          "keyword.operator", //import, export, return…
+          "entity.name.type.class", //class names
+          "storage.type.class.js" //class keyword
+        ],
+        "settings": {
+          // "foreground": "#FF0000",
+          "fontStyle": "bold"
+        }
+      },
+      {
+        "scope": [
+          //following will be excluded from italics (VSCode has some defaults for italics)
+          // "invalid",
+          "keyword.operator",
+          // "constant.numeric.css",
+          "keyword.other.unit.px.css",
+          "constant.numeric.decimal.js",
+          "constant.numeric.json"
+        ],
+        "settings": {
+          "fontStyle": ""
+        }
       }
-    },
-    {
-      "scope": [
-        "keyword", //import, export, return…
-        // "entity.name.type.class", //class names
-        "storage.type.class.js", //class keyword
-      ],
-      "settings": {
-        // "foreground": "#FF0000",
-        "fontStyle": "italic bold",
-      }
-    },
-    {
-      "scope": [
-        "keyword.operator", //import, export, return…
-        "entity.name.type.class", //class names
-        "storage.type.class.js", //class keyword
-      ],
-      "settings": {
-        // "foreground": "#FF0000",
-        "fontStyle": "bold"
-      }
-    },
-    {
-      "scope": [
-        //following will be excluded from italics (VSCode has some defaults for italics)
-        // "invalid",
-        "keyword.operator",
-        // "constant.numeric.css",
-        "keyword.other.unit.px.css",
-        "constant.numeric.decimal.js",
-        "constant.numeric.json"
-      ],
-      "settings": {
-        "fontStyle": ""
-      }
-    }
-  ]
-},
+    ]
+  }
 }
