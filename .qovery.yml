@@ -1,0 +1,11 @@
+---
+application:
+  name: "garage-backend"
+  project: "garage"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-garage-backend"
+  routes:
+  - application_name: "garage-backend"
+    paths:
+    - "/*"
