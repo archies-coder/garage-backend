@@ -65,11 +65,17 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const data1 = await vehicleEntryModel.find()
-  const data2 = await VehicleModel.find()
+  const data = await vehicleEntryModel
+    .find()
+    .populate({
+      path: 'vehicleId',
+      select: 'vehicleMake vehicleNo vehicleModel vehicleType -_id',
+    })
+    .exec()
+
   return {
-    totalCount: data1.length,
-    data: { data1, data2 },
+    totalCount: data.length,
+    data,
   }
 }
 

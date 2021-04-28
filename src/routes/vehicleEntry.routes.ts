@@ -32,7 +32,7 @@ const imageUploads = upload.fields(fields)
 
 // Check In (Create Visitor)
 router.post('/garage/v1.0/checkin', /*authMiddleware,*/ vehicleEntryController.checkIn)
-router.get('/garage/v1.0/vehicle-entries' /*authMiddleware,*/, vehicleEntryController.getVehicleEntrys)
+router.get('/garage/v1.0/vehicle-entries' /*authMiddleware,*/, vehicleEntryController.getVehicleEntries)
 router.post('/garage/v1.0/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
 
 export default router

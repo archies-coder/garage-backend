@@ -42,7 +42,7 @@ export = {
     }
   },
 
-  getVehicleEntrys: async (req: Request, res: Response) => {
+  getVehicleEntries: async (req: Request, res: Response) => {
     let ans
     if (Object.keys(req.query).length > 0) {
       ans = await getFilteredVehicleEntries(req.query)
