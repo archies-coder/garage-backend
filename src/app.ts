@@ -6,7 +6,7 @@ import VehicleRoutes from './routes/vehicle.routes'
 import VehicleEntryRoutes from './routes/vehicleEntry.routes'
 import BillRoutes from './routes/bill.routes'
 import AuthRoutes from './routes/auth.routes'
-import { stream } from './utils/logger.js'
+import { stream } from './utils/logger'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
 
