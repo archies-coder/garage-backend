@@ -5,6 +5,7 @@ import { dbConnection } from './database/index'
 import VehicleRoutes from './routes/vehicle.routes'
 import VehicleEntryRoutes from './routes/vehicleEntry.routes'
 import BillRoutes from './routes/bill.routes'
+import SparePartRoutes from './routes/sparePart.routes'
 import AuthRoutes from './routes/auth.routes'
 import { stream } from './utils/logger'
 import morgan from 'morgan'
@@ -34,6 +35,7 @@ app.use(AuthRoutes)
 app.use(VehicleRoutes)
 app.use(VehicleEntryRoutes)
 app.use(BillRoutes)
+app.use(SparePartRoutes)
 
 connect(dbConnection.url, dbConnection.options)
   .then(() => {

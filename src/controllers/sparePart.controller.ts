@@ -14,7 +14,7 @@ const postSparePart = async (req: Request, res: Response) => {
   const sparePartInput: ISparePartDTO = req.body
   if (!sparePartInput) return res.status(422).send('No Requst Body')
   try {
-    // TODO check if already exists, send 409 (CONFLICT) if so
+    // TODO check if already exists, if so, update existing
     const sparePart = await createNewSparePart(sparePartInput)
     res.send({
       data: sparePart,
