@@ -18,7 +18,10 @@ const fetchAll = async (order?: string) => {
   //   : order === 'ASC'
   //   ? await VehicleModel.find({}).sort({ _id: 1 })
   //   : await VehicleModel.find({})
-  return await vehicleEntryModel.find()
+  return await vehicleEntryModel.find().populate({
+    path: 'vehicleId',
+    select: 'vehicleMake vehicleNo vehicleModel vehicleType -_id',
+  })
 }
 
 const doCheckIn = async (entry: IVehicleEntryDTO) => {
@@ -65,13 +68,7 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const data = await vehicleEntryModel
-    .find()
-    .populate({
-      path: 'vehicleId',
-      select: 'vehicleMake vehicleNo vehicleModel vehicleType -_id',
-    })
-    .exec()
+  const data = await fetchAll()
 
   return {
     totalCount: data.length,
