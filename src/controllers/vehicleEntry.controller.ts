@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import { createNewVehicle } from '../services/vehicle.service'
 import { checkVehicleExists, doCheckIn, getAllVehicleEntries, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
@@ -7,14 +7,28 @@ import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import { IVehicle } from './../models/vehicle.model'
 
 export = {
-  checkIn: async (req: Request, res: Response) => {
+  checkIn: async (req: Request, res: Response, next: NextFunction) => {
     const vehicleEntry: IVehicleEntryDTO & IVehicleDTO = req.body
+    debugger
     if (vehicleEntry) {
-      const { vehicleNo, vehicleImagePath, vehicleMake, vehicleModel, vehicleType, purpose, remark, intime } = vehicleEntry
+      const {
+        vehicleNo,
+        vehicleImagePath,
+        vehicleMake,
+        vehicleModel,
+        vehicleType,
+        purpose,
+        remark,
+        intime,
+        customerName,
+        customerMobile,
+        customerAddress,
+      } = vehicleEntry
+      debugger
       // Check if Vehicle already Exists
-      const existingVehicle = await checkVehicleExists(vehicleNo)
-      if (existingVehicle) {
-        try {
+      try {
+        const existingVehicle = await checkVehicleExists(vehicleNo)
+        if (existingVehicle) {
           const createdVehicleEntry = await doCheckIn({
             vehicleId: existingVehicle._id,
             purpose,
@@ -22,20 +36,23 @@ export = {
             intime,
           })
           if (createdVehicleEntry) return res.send(createdVehicleEntry)
-        } catch (error) {
-          res.status(401).send(error.message)
+        } else {
+          const newVehicle: IVehicle = await createNewVehicle({
+            vehicleNo,
+            vehicleImagePath,
+            vehicleMake,
+            vehicleModel,
+            vehicleType,
+            customerName,
+            customerMobile,
+            customerAddress,
+          })
+          const vehicleId = newVehicle._id
+          const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime })
+          return res.send(createdVehicleEntry)
         }
-      } else {
-        const newVehicle: IVehicle = await createNewVehicle({
-          vehicleNo,
-          vehicleImagePath,
-          vehicleMake,
-          vehicleModel,
-          vehicleType,
-        })
-        const vehicleId = newVehicle._id
-        const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime })
-        return res.send(createdVehicleEntry)
+      } catch (error) {
+        next(error)
       }
     } else {
       throw new Error('No Request Body')

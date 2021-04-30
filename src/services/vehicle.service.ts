@@ -6,7 +6,15 @@ const fetchAll = async () => {
 }
 
 const createNewVehicle = async (vehicle: IVehicleDTO) => {
-  return await VehicleModel.create(vehicle)
+  const { vehicleMake, vehicleModel, vehicleNo, vehicleType, customerName, customerMobile, customerAddress } = vehicle
+  const newVehicle = new VehicleModel({ vehicleMake, vehicleModel, vehicleNo, vehicleType })
+  console.log(newVehicle)
+  newVehicle.customer = {
+    customerName,
+    customerMobile,
+    customerAddress,
+  }
+  return await newVehicle.save()
 }
 
 export { fetchAll, createNewVehicle }

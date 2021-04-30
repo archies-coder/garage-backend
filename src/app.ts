@@ -45,6 +45,6 @@ connect(dbConnection.url, dbConnection.options)
     console.log(`🔴 Unable to connect to the database: ${error}.`)
   })
 
-const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 8080
+const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 8000
 
 app.listen(PORT, () => console.log(`::::Server Running at port ${PORT}`))

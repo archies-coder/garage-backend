@@ -3,6 +3,7 @@ import { Document, Model, model, Schema } from 'mongoose'
 interface ICustomer extends Document {
   customerName: string
   customerMobile: string
+  customerAddress: string
 }
 
 const customerSchema: Schema<ICustomer> = new Schema({
@@ -24,6 +25,11 @@ export interface IVehicle extends Document {
   vehicleMake: string
   vehicleType: string
   vehicleImagePath?: string
+  customer: {
+    customerName: ICustomer['customerName']
+    customerMobile: ICustomer['customerMobile']
+    customerAddress: ICustomer['customerAddress']
+  }
 }
 
 const vehicleSchema: Schema<IVehicle> = new Schema(

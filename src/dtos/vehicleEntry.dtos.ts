@@ -1,5 +1,5 @@
 export interface IVehicleEntryDTO {
-  vehicleId: string
+  vehicleId?: string
   purpose?: string
   remark?: string
   intime: string
