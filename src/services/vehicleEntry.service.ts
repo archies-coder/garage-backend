@@ -68,7 +68,15 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const data = await fetchAll()
+  const datas = await fetchAll()
+
+  const data = datas.map(item => {
+    const { _id, vehicleId, intime, purpose, remark } = item
+    if (vehicleId) {
+      const { vehicleMake, vehicleModel, vehicleType, vehicleNo } = vehicleId
+      return { _id, vehicleMake, vehicleModel, vehicleType, vehicleNo, purpose, intime, remark }
+    } else return { _id, purpose, intime, remark }
+  })
 
   return {
     totalCount: data.length,
