@@ -1,12 +1,12 @@
 import { Document, Model, model, Schema } from 'mongoose'
 
-interface ICustomer extends Document {
+export interface ICustomer extends Document {
   customerName: string
   customerMobile: string
   customerAddress: string
 }
 
-const customerSchema: Schema<ICustomer> = new Schema({
+export const customerSchema: Schema<ICustomer> = new Schema({
   customerName: {
     type: String,
     required: true,

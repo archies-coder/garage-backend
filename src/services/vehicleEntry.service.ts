@@ -20,7 +20,7 @@ const fetchAll = async (order?: string) => {
   //   : await VehicleModel.find({})
   return await vehicleEntryModel.find().populate({
     path: 'vehicleId',
-    select: 'vehicleMake vehicleNo vehicleModel vehicleType -_id',
+    select: 'vehicleMake vehicleNo vehicleModel vehicleType customer -_id',
   })
 }
 
@@ -73,8 +73,21 @@ const getAllVehicleEntries = async () => {
   const data = datas.map(item => {
     const { _id, vehicleId, intime, purpose, remark } = item
     if (vehicleId) {
-      const { vehicleMake, vehicleModel, vehicleType, vehicleNo } = vehicleId
-      return { _id, vehicleMake, vehicleModel, vehicleType, vehicleNo, purpose, intime, remark }
+      const { vehicleMake, vehicleModel, vehicleType, vehicleNo, customer } = vehicleId
+      const { customerName, customerAddress, customerMobile } = customer
+      return {
+        _id,
+        vehicleMake,
+        vehicleModel,
+        vehicleType,
+        vehicleNo,
+        customerName,
+        customerMobile,
+        customerAddress,
+        purpose,
+        intime,
+        remark,
+      }
     } else return { _id, purpose, intime, remark }
   })
 

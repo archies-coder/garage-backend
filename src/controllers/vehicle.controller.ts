@@ -1,12 +1,12 @@
 import { IVehicle } from '../models/vehicle.model'
 import { NextFunction, Request, Response } from 'express'
-import { createNewVehicle, fetchAll } from '../services/vehicle.service'
+import { createNewVehicle, getVehicle } from '../services/vehicle.service'
 import { IVehicleDTO } from '../dtos/vehicle.dtos'
 
 const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
-  const vehicles: IVehicle[] = await fetchAll()
+  const vehicles = await getVehicle()
   res.send({
-    data: vehicles,
+    data: vehicles ? vehicles : [],
     message: 'All Vehicles',
   })
 }
