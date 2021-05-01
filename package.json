@@ -1,11 +1,17 @@
 {
-  "name": "node-ts",
+  "name": "garage-backend",
   "version": "1.0.0",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "start": "npm run build && cross-env NODE_ENV=production node dist/app.js",
+    "tsc": "tsc -p .",
+    "postinstall": "tsc",
     "dev": "nodemon -x ts-node src/app.ts",
-    "build": "tsc -p ."
+    "build": "tsc -p .",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
   "keywords": [],
   "author": "",
