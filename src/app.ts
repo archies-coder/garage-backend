@@ -31,6 +31,10 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev', { stream }))
 
+app.get('/', (req, res) => {
+  res.send('API Working')
+})
+
 app.use(AuthRoutes)
 app.use(VehicleRoutes)
 app.use(VehicleEntryRoutes)
