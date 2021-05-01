@@ -6,7 +6,7 @@ const getSpareParts = async (req: Request, res: Response, next: NextFunction) =>
   const spareParts = await fetchAll()
   res.send({
     totalCount: spareParts.length,
-    data: [spareParts],
+    data: spareParts,
   })
 }
 

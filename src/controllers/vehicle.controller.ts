@@ -7,7 +7,7 @@ const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
   const vehicles = await getVehicle()
   res.send({
     totalCount: vehicles.length,
-    data: vehicles ? [vehicles] : [],
+    data: vehicles ? vehicles : [],
   })
 }
 

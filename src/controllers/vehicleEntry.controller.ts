@@ -68,7 +68,7 @@ export = {
     }
     res.send({
       totalCount: ans ? ans.totalCount : 0,
-      data: ans ? [ans.data] : [],
+      data: ans ? ans.data : [],
     })
   },
 

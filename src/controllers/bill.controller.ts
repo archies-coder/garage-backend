@@ -7,7 +7,7 @@ const getAllBills = async (req: Request, res: Response, next: NextFunction) => {
     const data = await fetchAllBills()
     res.send({
       totalCount: data.length,
-      data: [data],
+      data: data,
     })
   } catch (error) {}
 }
