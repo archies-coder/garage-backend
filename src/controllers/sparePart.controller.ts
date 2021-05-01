@@ -5,8 +5,8 @@ import { ISparePartDTO } from '../dtos/sparePart.dtos'
 const getSpareParts = async (req: Request, res: Response, next: NextFunction) => {
   const spareParts = await fetchAll()
   res.send({
-    data: spareParts,
-    message: 'All spare-parts',
+    totalCount: spareParts.length,
+    data: [spareParts],
   })
 }
 

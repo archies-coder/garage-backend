@@ -6,8 +6,8 @@ import { IVehicleDTO } from '../dtos/vehicle.dtos'
 const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
   const vehicles = await getVehicle()
   res.send({
-    data: vehicles ? vehicles : [],
-    message: 'All Vehicles',
+    totalCount: vehicles.length,
+    data: vehicles ? [vehicles] : [],
   })
 }
 

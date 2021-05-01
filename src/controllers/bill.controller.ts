@@ -5,7 +5,10 @@ import { createBillAndUpdateVehicleEntry, fetchAllBills, fetchBillByID } from '.
 const getAllBills = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await fetchAllBills()
-    res.send({ data })
+    res.send({
+      totalCount: data.length,
+      data: [data],
+    })
   } catch (error) {}
 }
 
