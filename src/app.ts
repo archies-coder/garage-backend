@@ -31,6 +31,10 @@ app.use(express.json())
 app.use(cors())
 app.use(morgan('dev', { stream }))
 
+app.get('/', (req, res) => {
+  res.send('API Working')
+})
+
 app.use(AuthRoutes)
 app.use(VehicleRoutes)
 app.use(VehicleEntryRoutes)
@@ -45,6 +49,6 @@ connect(dbConnection.url, dbConnection.options)
     console.log(`🔴 Unable to connect to the database: ${error}.`)
   })
 
-const PORT = process.env.NODE_ENV === 'production' ? process.env.PORT : 8000
+const PORT = process.env.PORT || 8000
 
 app.listen(PORT, () => console.log(`::::Server Running at port ${PORT}`))
