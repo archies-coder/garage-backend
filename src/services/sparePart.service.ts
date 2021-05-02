@@ -6,7 +6,19 @@ const fetchAll = async () => {
 }
 
 const createNewSparePart = async (sparePart: ISparePartDTO) => {
-  return await SparePartModel.create(sparePart)
+  const data = await SparePartModel.find()
+  let value = true
+  data.map(item => {
+    if (item.name === sparePart.name && item.category === sparePart.category) {
+      value = false
+    }
+  })
+  if (value) return SparePartModel.create(sparePart)
+  else {
+    const filter = { name: sparePart.name }
+    const update = { quantity: sparePart.quantity }
+    return SparePartModel.findOneAndUpdate(filter, update, { new: true })
+  }
 }
 
 export { fetchAll, createNewSparePart }

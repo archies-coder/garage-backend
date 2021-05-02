@@ -8,6 +8,8 @@ export interface IVehicleEntry extends Document {
   intime: string
   outime: string
   vehicleId: IVehicle['_id']
+  createdAt: string
+  updatedAt: string
   // billInfo: IBill['_id']
 }
 

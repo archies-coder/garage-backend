@@ -30,6 +30,8 @@ export interface IVehicle extends Document {
     customerMobile: ICustomer['customerMobile']
     customerAddress: ICustomer['customerAddress']
   }
+  createdAt: string
+  updatedAt: string
 }
 
 const vehicleSchema: Schema<IVehicle> = new Schema(

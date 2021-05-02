@@ -8,9 +8,9 @@ const fetchAll = async () => {
 const getVehicle = async () => {
   const datas = await fetchAll()
   const data = datas.map(item => {
-    const { _id, vehicleMake, vehicleModel, vehicleNo, vehicleType, customer } = item
+    const { _id, vehicleMake, vehicleModel, vehicleNo, vehicleType, customer, createdAt, updatedAt } = item
     const { customerName, customerAddress, customerMobile } = customer
-    return { _id, vehicleMake, vehicleModel, vehicleType, vehicleNo, customerName, customerAddress, customerMobile }
+    return { _id, vehicleMake, vehicleModel, vehicleType, vehicleNo, customerName, customerAddress, customerMobile, createdAt, updatedAt }
   })
   return data
 }
