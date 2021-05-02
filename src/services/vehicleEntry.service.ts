@@ -71,7 +71,7 @@ const getAllVehicleEntries = async () => {
   const datas = await fetchAll()
 
   const data = datas.map(item => {
-    const { _id, vehicleId, intime, purpose, remark } = item
+    const { _id, vehicleId, intime, purpose, remark, createdAt, updatedAt } = item
     if (vehicleId) {
       const { vehicleMake, vehicleModel, vehicleType, vehicleNo, customer } = vehicleId
       const { customerName, customerAddress, customerMobile } = customer
@@ -87,6 +87,8 @@ const getAllVehicleEntries = async () => {
         purpose,
         intime,
         remark,
+        createdAt,
+        updatedAt,
       }
     } else return { _id, purpose, intime, remark }
   })
