@@ -28,7 +28,7 @@ const fetchAll = async () => {
     (await vehicleEntryModel.countDocuments({ $and: [{ createdAt: { $gte: startOfToday.toISOString() } }, { outime: '' }] })) || 0
   data.parts_used = 25
   data.total_customers = (await vehicleEntryModel.countDocuments({ createdAt: { $gte: startOfToday.toISOString() } })) || 0
-  data.visitorSatas = visitorsByDay
+  data.visitorStats = visitorsByDay
 
   return data
 }
