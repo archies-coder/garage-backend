@@ -3,4 +3,5 @@ export interface IVehicleEntryDTO {
   purpose?: string
   remark?: string
   intime: string
+  outime: string
 }
