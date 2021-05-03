@@ -34,6 +34,7 @@ export = {
             purpose,
             remark,
             intime,
+            outime: '',
           })
           if (createdVehicleEntry) return res.send(createdVehicleEntry)
         } else {
@@ -48,7 +49,7 @@ export = {
             customerAddress,
           })
           const vehicleId = newVehicle._id
-          const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime })
+          const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime, outime: '' })
           return res.send(createdVehicleEntry)
         }
       } catch (error) {
