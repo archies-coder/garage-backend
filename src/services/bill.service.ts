@@ -3,7 +3,28 @@ import billModel from '../models/bill.model'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 
 const fetchAllBills = async () => {
-  return await billModel.find()
+  const datas = await billModel.find().populate({
+    path: 'vehicleEntryId',
+    select: 'vehicleId',
+    populate: { path: 'vehicleId', select: 'customer' },
+  })
+  const data = datas.map(item => {
+    const { _id, vehicleEntryId: vehicleEntryDetails, name, cost, createdAt, updatedAt } = item
+    const { _id: vehicleEntryId } = vehicleEntryDetails
+    const { customerName, customerAddress, customerMobile } = vehicleEntryDetails.vehicleId.customer
+    return {
+      _id,
+      vehicleEntryId,
+      customerName,
+      customerAddress,
+      customerMobile,
+      name,
+      cost,
+      createdAt,
+      updatedAt,
+    }
+  })
+  return data
 }
 
 const fetchBillByID = async (id: string) => {
