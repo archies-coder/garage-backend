@@ -6,6 +6,8 @@ export interface IBill extends Document {
   name: string
   cost: number
   vehicleEntryId: IVehicleEntry['_id']
+  createdAt: string
+  updatedAt: string
 }
 
 export const BillSchema: Schema<IBill> = new Schema(
