@@ -11,7 +11,7 @@ const createNewSparePart = async (sparePart: ISparePartDTO) => {
   let add = 0
   let quant = 0
   data.map(item => {
-    if (item.name === sparePart.name && item.category === sparePart.category) {
+    if (item.name === sparePart.name && item.brand === sparePart.brand) {
       value = false
       add = item.quantity
     }

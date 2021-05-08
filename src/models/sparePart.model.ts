@@ -4,6 +4,7 @@ export interface ISparePart extends Document {
   name: string
   category: string
   brand: string
+  cost: number
   quantity: number
 }
 
@@ -18,6 +19,9 @@ const sparePartSchema: Schema<ISparePart> = new Schema(
     },
     brand: {
       type: String,
+    },
+    cost: {
+      type: Number,
     },
     quantity: {
       type: Number,
