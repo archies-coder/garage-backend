@@ -25,6 +25,7 @@ export const BillSchema: Schema<IBill> = new Schema(
       type: Number,
       required: true,
     },
+    sparePartsInfo: [{ type: Schema.Types.ObjectId, ref: 'SparePart' }],
   },
   { timestamps: true },
 )
