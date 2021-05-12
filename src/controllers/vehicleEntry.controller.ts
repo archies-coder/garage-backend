@@ -1,7 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import { createNewVehicle } from '../services/vehicle.service'
-import { checkVehicleExists, doCheckIn, getAllVehicleEntries, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
+import {
+  checkVehicleExists,
+  doCheckIn,
+  getAllVehicleEntries,
+  getFilteredVehicleEntries,
+} from '../services/vehicleEntry.service'
 import { IVehicleDTO } from './../dtos/vehicle.dtos'
 import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import { IVehicle } from './../models/vehicle.model'
@@ -49,7 +54,13 @@ export = {
             customerAddress,
           })
           const vehicleId = newVehicle._id
-          const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime, outime: '' })
+          const createdVehicleEntry = await doCheckIn({
+            vehicleId,
+            purpose,
+            remark,
+            intime,
+            outime: '',
+          })
           return res.send(createdVehicleEntry)
         }
       } catch (error) {
@@ -74,8 +85,11 @@ export = {
   },
 
   checkOut: async (req: any, res: any) => {
-    const { checkin_id, user } = req.body
-    const update = { checkOutBy: user, outime: new Date().toISOString() }
+    const checkin_id = req.params.id
+    const update = {
+      //  checkOutBy: user,
+      outime: new Date().toISOString(),
+    }
 
     await vehicleEntryModel.findByIdAndUpdate(checkin_id, update)
     res.send({ checkOut: 'Success' })

@@ -4,6 +4,7 @@ import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import VehicleModel from '../models/vehicle.model'
 import isEmpty from '../utils/isEmpty'
+import HttpException from '../exceptions/HttpException'
 
 interface IFilterQueries {
   page?: string
@@ -41,7 +42,10 @@ const checkVehicleExists = async (number: string) => {
   return doc
 }
 
-const filterVehicleEntries = (data: IVehicleEntry[], { page, count, vehicleEntry, purpose }: any) => {
+const filterVehicleEntries = (
+  data: IVehicleEntry[],
+  { page, count, vehicleEntry, purpose }: any,
+) => {
   const p = page && parseInt(page)
   const c = count && parseInt(count)
   const skip = (p as number) * (c as number)
@@ -100,4 +104,18 @@ const getAllVehicleEntries = async () => {
   }
 }
 
-export { doCheckIn, checkVehicleExists, getFilteredVehicleEntries, getAllVehicleEntries }
+const doCheckOut = async (id: string) => {
+  const vehicleEntryWithId = await vehicleEntryModel.findByIdAndUpdate(id, {
+    outime: new Date().toISOString(),
+  })
+  if (!vehicleEntryWithId) return new HttpException('Vehicle not found', 404)
+  return vehicleEntryWithId
+}
+
+export {
+  doCheckIn,
+  checkVehicleExists,
+  getFilteredVehicleEntries,
+  getAllVehicleEntries,
+  doCheckOut,
+}
