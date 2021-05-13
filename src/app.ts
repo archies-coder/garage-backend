@@ -8,6 +8,7 @@ import BillRoutes from './routes/bill.routes'
 import SparePartRoutes from './routes/sparePart.routes'
 import StatsData from './routes/stats.routes'
 import AuthRoutes from './routes/auth.routes'
+import CustomerRoutes from './routes/customer.routes'
 import { stream } from './utils/logger'
 import morgan from 'morgan'
 import * as dotenv from 'dotenv'
@@ -42,6 +43,7 @@ app.use(VehicleEntryRoutes)
 app.use(BillRoutes)
 app.use(SparePartRoutes)
 app.use(StatsData)
+app.use(CustomerRoutes)
 
 connect(dbConnection.url, dbConnection.options)
   .then(() => {
