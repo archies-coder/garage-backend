@@ -1,17 +1,18 @@
 import cors from 'cors'
+import * as dotenv from 'dotenv'
 import express, { Application } from 'express'
 import { connect } from 'mongoose'
+import morgan from 'morgan'
+import { vehicleImageBucket } from './database/firebase'
 import { dbConnection } from './database/index'
-import VehicleRoutes from './routes/vehicle.routes'
-import VehicleEntryRoutes from './routes/vehicleEntry.routes'
+import AuthRoutes from './routes/auth.routes'
 import BillRoutes from './routes/bill.routes'
+import CustomerRoutes from './routes/customer.routes'
 import SparePartRoutes from './routes/sparePart.routes'
 import StatsData from './routes/stats.routes'
-import AuthRoutes from './routes/auth.routes'
-import CustomerRoutes from './routes/customer.routes'
+import VehicleRoutes from './routes/vehicle.routes'
+import VehicleEntryRoutes from './routes/vehicleEntry.routes'
 import { stream } from './utils/logger'
-import morgan from 'morgan'
-import * as dotenv from 'dotenv'
 
 dotenv.config()
 
@@ -19,7 +20,9 @@ const app: Application = express()
 
 export const baseUrl = '/garage/v1.0'
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
+  const files = await vehicleImageBucket.getFiles()
+  console.log(files)
   res.send('Hello')
 })
 
