@@ -8,16 +8,51 @@ const fetchAll = async () => {
 const getVehicle = async () => {
   const datas = await fetchAll()
   const data = datas.map(item => {
-    const { _id, vehicleMake, vehicleModel, vehicleNo, vehicleType, customer, createdAt, updatedAt } = item
+    const {
+      _id,
+      vehicleMake,
+      vehicleModel,
+      vehicleNo,
+      vehicleType,
+      customer,
+      createdAt,
+      updatedAt,
+    } = item
     const { customerName, customerAddress, customerMobile } = customer
-    return { _id, vehicleMake, vehicleModel, vehicleType, vehicleNo, customerName, customerAddress, customerMobile, createdAt, updatedAt }
+    return {
+      _id,
+      vehicleMake,
+      vehicleModel,
+      vehicleType,
+      vehicleNo,
+      customerName,
+      customerAddress,
+      customerMobile,
+      createdAt,
+      updatedAt,
+    }
   })
   return data
 }
 
 const createNewVehicle = async (vehicle: IVehicleDTO) => {
-  const { vehicleMake, vehicleModel, vehicleNo, vehicleType, customerName, customerMobile, customerAddress } = vehicle
-  const newVehicle = new VehicleModel({ vehicleMake, vehicleModel, vehicleNo, vehicleType })
+  const {
+    vehicleMake,
+    vehicleModel,
+    vehicleNo,
+    vehicleType,
+    customerName,
+    customerMobile,
+    customerAddress,
+    vehicleImagePath,
+  } = vehicle
+  const newVehicle = new VehicleModel({
+    vehicleMake,
+    vehicleModel,
+    vehicleNo,
+    vehicleType,
+    vehicleImagePath,
+  })
   console.log(newVehicle)
   newVehicle.customer = {
     customerName,

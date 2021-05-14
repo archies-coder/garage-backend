@@ -4,6 +4,7 @@ import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import VehicleModel from '../models/vehicle.model'
 import isEmpty from '../utils/isEmpty'
+import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
 
 interface IFilterQueries {
   page?: string
@@ -41,14 +42,19 @@ const checkVehicleExists = async (number: string) => {
   return doc
 }
 
-const filterVehicleEntries = (data: IVehicleEntry[], { page, count, vehicleEntry, purpose }: any) => {
+const filterVehicleEntries = (
+  data: IVehicleEntry[],
+  { page, count, vehicleEntry, purpose }: any,
+) => {
   const p = page && parseInt(page)
   const c = count && parseInt(count)
   const skip = (p as number) * (c as number)
   let ans = data.slice(skip, skip + (c as number))
 
   if (!isEmpty(vehicleEntry)) {
-    ans = ans.filter((el: any) => el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()))
+    ans = ans.filter((el: any) =>
+      el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()),
+    )
   }
   if (!isEmpty(purpose)) {
     ans = ans.filter((el: any) => el.purpose === purpose)
@@ -100,4 +106,20 @@ const getAllVehicleEntries = async () => {
   }
 }
 
-export { doCheckIn, checkVehicleExists, getFilteredVehicleEntries, getAllVehicleEntries }
+const uploadVehicleImage = async (file: File | any) => {
+  if (file) {
+    // @ts-ignore
+    const imageUpload = await uploadImageToStorage(file)
+    return imageUpload
+  } else {
+    return new Error('No File')
+  }
+}
+
+export {
+  doCheckIn,
+  checkVehicleExists,
+  getFilteredVehicleEntries,
+  getAllVehicleEntries,
+  uploadVehicleImage,
+}

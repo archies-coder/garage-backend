@@ -1,7 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 import { createNewVehicle } from '../services/vehicle.service'
-import { checkVehicleExists, doCheckIn, getAllVehicleEntries, getFilteredVehicleEntries } from '../services/vehicleEntry.service'
+import {
+  checkVehicleExists,
+  doCheckIn,
+  getAllVehicleEntries,
+  getFilteredVehicleEntries,
+  uploadVehicleImage,
+} from '../services/vehicleEntry.service'
 import { IVehicleDTO } from './../dtos/vehicle.dtos'
 import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
 import { IVehicle } from './../models/vehicle.model'
@@ -9,11 +15,10 @@ import { IVehicle } from './../models/vehicle.model'
 export = {
   checkIn: async (req: Request, res: Response, next: NextFunction) => {
     const vehicleEntry: IVehicleEntryDTO & IVehicleDTO = req.body
-    debugger
+
     if (vehicleEntry) {
       const {
         vehicleNo,
-        vehicleImagePath,
         vehicleMake,
         vehicleModel,
         vehicleType,
@@ -24,7 +29,7 @@ export = {
         customerMobile,
         customerAddress,
       } = vehicleEntry
-      debugger
+
       // Check if Vehicle already Exists
       try {
         const existingVehicle = await checkVehicleExists(vehicleNo)
@@ -38,6 +43,12 @@ export = {
           })
           if (createdVehicleEntry) return res.send(createdVehicleEntry)
         } else {
+          const uploadResponse = await uploadVehicleImage(req.file)
+
+          let vehicleImagePath = ''
+          if (uploadResponse) {
+            vehicleImagePath = uploadResponse as string
+          }
           const newVehicle: IVehicle = await createNewVehicle({
             vehicleNo,
             vehicleImagePath,
@@ -49,7 +60,13 @@ export = {
             customerAddress,
           })
           const vehicleId = newVehicle._id
-          const createdVehicleEntry = await doCheckIn({ vehicleId, purpose, remark, intime, outime: '' })
+          const createdVehicleEntry = await doCheckIn({
+            vehicleId,
+            purpose,
+            remark,
+            intime,
+            outime: '',
+          })
           return res.send(createdVehicleEntry)
         }
       } catch (error) {
