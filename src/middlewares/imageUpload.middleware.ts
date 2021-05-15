@@ -23,16 +23,19 @@ const storage = multer.diskStorage({
   },
 })
 
-export const uploadImageToStorage = (file: {
-  originalname: any
-  mimetype: any
-  buffer: any
-}) => {
-  return new Promise((resolve, reject) => {
+export const uploadImageToStorage = async (
+  file: {
+    originalname: any
+    mimetype: any
+    buffer: any
+  },
+  id: string,
+) => {
+  return new Promise<{ url: string; id: string }>(async (resolve, reject) => {
     if (!file) {
       reject('No image file')
     }
-    const newFileName = `${file.originalname}_${Date.now()}`
+    const newFileName = `${id}_${file.originalname}_${Date.now()}`
 
     const fileUpload = vehicleImageBucket.file(newFileName)
 
@@ -46,12 +49,19 @@ export const uploadImageToStorage = (file: {
       reject('Something is wrong! Unable to upload at the moment.')
     })
 
-    blobStream.on('finish', () => {
+    blobStream.on('finish', async () => {
       // The public URL can be used to directly access the file via HTTP.
-      const url = format(
-        `https://storage.googleapis.com/${vehicleImageBucket.name}/${fileUpload.name}`,
-      )
-      resolve(url)
+      // const url = format(
+      //   `https://storage.googleapis.com/${vehicleImageBucket.name}/${fileUpload.name}`,
+      // )
+
+      const url1 = await fileUpload.getSignedUrl({
+        action: 'read',
+        expires: '03-09-2491',
+      })
+      const url = format(url1[0])
+
+      resolve({ url, id })
     })
 
     blobStream.end(file.buffer)

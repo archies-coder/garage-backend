@@ -1,7 +1,6 @@
-import { IVehicle } from '../models/vehicle.model'
 import { NextFunction, Request, Response } from 'express'
-import { createNewVehicle, getVehicle } from '../services/vehicle.service'
 import { IVehicleDTO } from '../dtos/vehicle.dtos'
+import { createNewVehicle, getVehicle } from '../services/vehicle.service'
 
 const getVehicles = async (req: Request, res: Response, next: NextFunction) => {
   const vehicles = await getVehicle()
@@ -25,4 +24,23 @@ const postVehicle = async (req: Request, res: Response) => {
   }
 }
 
-export { getVehicles, postVehicle }
+const getVehicleImage = async (req: Request, res: Response) => {
+  // const id: string = req.params.id
+  // const response = await axios.get(
+  //   'https://storage.googleapis.com/garage-4b71d.appspot.com/passportpic.jpg_1621015334284',
+  // )
+  // debugger
+  // const filename = ''
+  // try {
+  //   response[0].map(item => {
+  //     debugger
+  //     filename = item.name
+  //     const file = item.download({ destination: './../../uploads/file.jpg' })
+  //   })
+  // } catch (error) {
+  //   console.error('Something went wrong\n' + error)
+  // }
+  // res.sendFile(path.join(__dirname, '../../uploads/', filename))
+}
+
+export { getVehicles, postVehicle, getVehicleImage }

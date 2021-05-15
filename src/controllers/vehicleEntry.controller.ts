@@ -47,7 +47,7 @@ export = {
 
           let vehicleImagePath = ''
           if (uploadResponse) {
-            vehicleImagePath = uploadResponse as string
+            vehicleImagePath = uploadResponse.url
           }
           const newVehicle: IVehicle = await createNewVehicle({
             vehicleNo,

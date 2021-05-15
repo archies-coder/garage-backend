@@ -5,6 +5,7 @@ import vehicleEntryModel from '../models/vehicleEntry.model'
 import VehicleModel from '../models/vehicle.model'
 import isEmpty from '../utils/isEmpty'
 import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
+import * as uuid from 'uuid'
 
 interface IFilterQueries {
   page?: string
@@ -107,12 +108,20 @@ const getAllVehicleEntries = async () => {
 }
 
 const uploadVehicleImage = async (file: File | any) => {
-  if (file) {
-    // @ts-ignore
-    const imageUpload = await uploadImageToStorage(file)
-    return imageUpload
-  } else {
-    return new Error('No File')
+  try {
+    if (file) {
+      const id = uuid.v4()
+      const imageUploadResponse: { url: string; id: string } = await uploadImageToStorage(
+        file,
+        id,
+      )
+      debugger
+      if (imageUploadResponse) return imageUploadResponse
+    } else {
+      return null
+    }
+  } catch (error) {
+    return null
   }
 }
 
