@@ -22,7 +22,8 @@ const fetchAll = async (order?: string) => {
   //   : await VehicleModel.find({})
   return await vehicleEntryModel.find().populate({
     path: 'vehicleId',
-    select: 'vehicleMake vehicleNo vehicleModel vehicleType customer -_id',
+    select:
+      'vehicleMake vehicleImagePath vehicleNo vehicleModel vehicleType customer -_id',
   })
 }
 
@@ -75,12 +76,19 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const datas = await fetchAll()
+  const data = await fetchAll()
 
-  const data = datas.map(item => {
+  const resp = data.map(item => {
     const { _id, vehicleId, intime, purpose, remark, createdAt, updatedAt, outime } = item
     if (vehicleId) {
-      const { vehicleMake, vehicleModel, vehicleType, vehicleNo, customer } = vehicleId
+      const {
+        vehicleMake,
+        vehicleModel,
+        vehicleType,
+        vehicleNo,
+        customer,
+        vehicleImagePath,
+      } = vehicleId
       const { customerName, customerAddress, customerMobile } = customer
       return {
         _id,
@@ -97,13 +105,14 @@ const getAllVehicleEntries = async () => {
         createdAt,
         updatedAt,
         outime,
+        vehicleImagePath,
       }
     } else return { _id, purpose, intime, remark }
   })
 
   return {
-    totalCount: data.length,
-    data,
+    totalCount: resp.length,
+    data: resp,
   }
 }
 
@@ -115,7 +124,6 @@ const uploadVehicleImage = async (file: File | any) => {
         file,
         id,
       )
-      debugger
       if (imageUploadResponse) return imageUploadResponse
     } else {
       return null
