@@ -1,10 +1,11 @@
-import { IVehicleEntry } from './../models/vehicleEntry.model'
-import { IVehicle } from './../models/vehicle.model'
-import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
-import vehicleEntryModel from '../models/vehicleEntry.model'
-import VehicleModel from '../models/vehicle.model'
-import isEmpty from '../utils/isEmpty'
+import * as uuid from 'uuid'
 import HttpException from '../exceptions/HttpException'
+import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
+import VehicleModel from '../models/vehicle.model'
+import vehicleEntryModel from '../models/vehicleEntry.model'
+import isEmpty from '../utils/isEmpty'
+import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
+import { IVehicleEntry } from './../models/vehicleEntry.model'
 
 interface IFilterQueries {
   page?: string
@@ -21,7 +22,8 @@ const fetchAll = async (order?: string) => {
   //   : await VehicleModel.find({})
   return await vehicleEntryModel.find().populate({
     path: 'vehicleId',
-    select: 'vehicleMake vehicleNo vehicleModel vehicleType customer -_id',
+    select:
+      'vehicleMake vehicleImagePath vehicleNo vehicleModel vehicleType customer -_id',
   })
 }
 
@@ -52,7 +54,9 @@ const filterVehicleEntries = (
   let ans = data.slice(skip, skip + (c as number))
 
   if (!isEmpty(vehicleEntry)) {
-    ans = ans.filter((el: any) => el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()))
+    ans = ans.filter((el: any) =>
+      el.name.toLowerCase().startsWith(vehicleEntry!.toLowerCase()),
+    )
   }
   if (!isEmpty(purpose)) {
     ans = ans.filter((el: any) => el.purpose === purpose)
@@ -72,12 +76,19 @@ const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
 }
 
 const getAllVehicleEntries = async () => {
-  const datas = await fetchAll()
+  const data = await fetchAll()
 
-  const data = datas.map(item => {
+  const resp = data.map(item => {
     const { _id, vehicleId, intime, purpose, remark, createdAt, updatedAt, outime } = item
     if (vehicleId) {
-      const { vehicleMake, vehicleModel, vehicleType, vehicleNo, customer } = vehicleId
+      const {
+        vehicleMake,
+        vehicleModel,
+        vehicleType,
+        vehicleNo,
+        customer,
+        vehicleImagePath,
+      } = vehicleId
       const { customerName, customerAddress, customerMobile } = customer
       return {
         _id,
@@ -94,13 +105,31 @@ const getAllVehicleEntries = async () => {
         createdAt,
         updatedAt,
         outime,
+        vehicleImagePath,
       }
     } else return { _id, purpose, intime, remark }
   })
 
   return {
-    totalCount: data.length,
-    data,
+    totalCount: resp.length,
+    data: resp,
+  }
+}
+
+const uploadVehicleImage = async (file: File | any) => {
+  try {
+    if (file) {
+      const id = uuid.v4()
+      const imageUploadResponse: { url: string; id: string } = await uploadImageToStorage(
+        file,
+        id,
+      )
+      if (imageUploadResponse) return imageUploadResponse
+    } else {
+      return null
+    }
+  } catch (error) {
+    return null
   }
 }
 
@@ -117,5 +146,6 @@ export {
   checkVehicleExists,
   getFilteredVehicleEntries,
   getAllVehicleEntries,
+  uploadVehicleImage,
   doCheckOut,
 }
