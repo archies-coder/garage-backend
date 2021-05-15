@@ -20,9 +20,13 @@ router.post(
   vehicleEntryController.checkIn,
 )
 router.get(
+  '/garage/v1.0/checkout/:id',
+  /*authMiddleware,*/ vehicleEntryController.checkOut,
+)
+router.get(
   '/garage/v1.0/vehicle-entries' /*authMiddleware,*/,
   vehicleEntryController.getVehicleEntries,
 )
-router.post('/garage/v1.0/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
+// router.post('/garage/v1.0/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
 
 export default router

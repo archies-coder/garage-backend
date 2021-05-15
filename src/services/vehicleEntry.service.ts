@@ -1,11 +1,11 @@
-import { IVehicleEntry } from './../models/vehicleEntry.model'
-import { IVehicle } from './../models/vehicle.model'
-import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
-import vehicleEntryModel from '../models/vehicleEntry.model'
-import VehicleModel from '../models/vehicle.model'
-import isEmpty from '../utils/isEmpty'
-import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
 import * as uuid from 'uuid'
+import HttpException from '../exceptions/HttpException'
+import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
+import VehicleModel from '../models/vehicle.model'
+import vehicleEntryModel from '../models/vehicleEntry.model'
+import isEmpty from '../utils/isEmpty'
+import { IVehicleEntryDTO } from './../dtos/vehicleEntry.dtos'
+import { IVehicleEntry } from './../models/vehicleEntry.model'
 
 interface IFilterQueries {
   page?: string
@@ -133,10 +133,19 @@ const uploadVehicleImage = async (file: File | any) => {
   }
 }
 
+const doCheckOut = async (id: string) => {
+  const vehicleEntryWithId = await vehicleEntryModel.findByIdAndUpdate(id, {
+    outime: new Date().toISOString(),
+  })
+  if (!vehicleEntryWithId) return new HttpException('Vehicle not found', 404)
+  return vehicleEntryWithId
+}
+
 export {
   doCheckIn,
   checkVehicleExists,
   getFilteredVehicleEntries,
   getAllVehicleEntries,
   uploadVehicleImage,
+  doCheckOut,
 }

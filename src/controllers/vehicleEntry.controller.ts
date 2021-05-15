@@ -91,8 +91,11 @@ export = {
   },
 
   checkOut: async (req: any, res: any) => {
-    const { checkin_id, user } = req.body
-    const update = { checkOutBy: user, outime: new Date().toISOString() }
+    const checkin_id = req.params.id
+    const update = {
+      //  checkOutBy: user,
+      outime: new Date().toISOString(),
+    }
 
     await vehicleEntryModel.findByIdAndUpdate(checkin_id, update)
     res.send({ checkOut: 'Success' })
