@@ -4,7 +4,8 @@ import userModel from './../models/user.model'
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const token: string | undefined = req.query.token?.toString()
+    // const token: string | undefined = req.query.token?.toString()
+    const token: string | undefined = req.headers.authorization?.toString().split(' ')[1]
     if (token) {
       const secret: string = process.env.JWT_SECRET || 'sometopsecretstring'
       const verificationResponse = jwt.verify(token, secret)
