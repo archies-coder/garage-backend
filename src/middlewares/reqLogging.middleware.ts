@@ -11,7 +11,7 @@ export const requestLoggerMiddleware = async (
     req.socket?.remoteAddress
 
   await reqLogModel.create({
-    ip: req.ip,
+    ip: parseIp(req),
     resource: req.path,
     method: req.method,
   })
