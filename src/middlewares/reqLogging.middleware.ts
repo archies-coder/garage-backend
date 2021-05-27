@@ -9,9 +9,7 @@ export const requestLoggerMiddleware = async (
   const parseIp = (req: Request) =>
     (req.headers['x-forwarded-for'] as string)?.split(',').shift() ||
     req.socket?.remoteAddress
-  console.log(parseIp(req), ' ', req.ip)
-  console.log('#############################')
-  console.log(req.url, req.path)
+
   await reqLogModel.create({
     ip: req.ip,
     resource: req.path,
