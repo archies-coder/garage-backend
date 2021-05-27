@@ -5,6 +5,7 @@ import { connect } from 'mongoose'
 import morgan from 'morgan'
 import { vehicleImageBucket } from './database/firebase'
 import { dbConnection } from './database/index'
+import { requestLoggerMiddleware } from './middlewares/reqLogging.middleware'
 import AuthRoutes from './routes/auth.routes'
 import BillRoutes from './routes/bill.routes'
 import CustomerRoutes from './routes/customer.routes'
@@ -20,12 +21,6 @@ const app: Application = express()
 
 export const baseUrl = '/garage/v1.0'
 
-app.get('/', async (req, res) => {
-  const files = await vehicleImageBucket.getFiles()
-  console.log(files)
-  res.send('Hello')
-})
-
 // Middlewares
 app.use(
   express.urlencoded({
@@ -35,6 +30,7 @@ app.use(
 app.use(express.json())
 app.use(cors())
 app.use(morgan('dev', { stream }))
+app.use(requestLoggerMiddleware)
 
 app.get('/', (req, res) => {
   res.send('API Working')
