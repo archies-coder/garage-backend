@@ -9,11 +9,14 @@ import {
 const getAllBills = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const data = await fetchAllBills()
+    debugger
     res.send({
       totalCount: data.length,
       data: data,
     })
-  } catch (error) {}
+  } catch (error) {
+    next(error)
+  }
 }
 
 const getBillByID = async (req: Request, res: Response, next: NextFunction) => {
