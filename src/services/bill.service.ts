@@ -1,3 +1,4 @@
+import { ICreateNewBill } from './../dtos/bill.dtos'
 import { INewBillDTO } from '../dtos/bill.dtos'
 import billModel from '../models/bill.model'
 import vehicleEntryModel from '../models/vehicleEntry.model'
@@ -9,9 +10,20 @@ const fetchAllBills = async () => {
     populate: { path: 'vehicleId', select: 'customer' },
   })
   const data = datas.map(item => {
-    const { _id, vehicleEntryId: vehicleEntryDetails, name, cost, createdAt, updatedAt } = item
+    const {
+      _id,
+      vehicleEntryId: vehicleEntryDetails,
+      name,
+      cost,
+      createdAt,
+      updatedAt,
+    } = item
     const { _id: vehicleEntryId } = vehicleEntryDetails
-    const { customerName, customerAddress, customerMobile } = vehicleEntryDetails.vehicleId.customer
+    const {
+      customerName,
+      customerAddress,
+      customerMobile,
+    } = vehicleEntryDetails.vehicleId.customer
     return {
       _id,
       vehicleEntryId,
@@ -32,15 +44,28 @@ const fetchBillByID = async (id: string) => {
 }
 
 const createBillAndUpdateVehicleEntry = async (input: INewBillDTO) => {
-  const { vehicleEntryId, name, cost } = input
-  const newBill = await billModel.create({ vehicleEntryId, name, cost })
+  const { vehicleEntryId, items } = input
+
+  const data = items.map(({ name, cost }) => ({
+    vehicleEntryId,
+    name,
+    cost,
+  }))
+
+  const newBillsArray = await billModel.insertMany(data)
+  debugger
+  const ids: string[] = newBillsArray.map(b => b.id)
   const updatedVehiclEntry = await vehicleEntryModel.findByIdAndUpdate(vehicleEntryId, {
-    $push: { billInfo: newBill.id },
+    $push: {
+      billInfo: {
+        $each: ids,
+      },
+    },
   })
   if (!updatedVehiclEntry) {
     return new Error('Failed to update vehicle entry: ')
   }
-  return { newBillId: newBill.id, updatedVehicleEntry: updatedVehiclEntry?.id }
+  return { newBillId: newBillsArray, updatedVehicleEntry: updatedVehiclEntry?.id }
 }
 
 export { fetchAllBills, fetchBillByID, createBillAndUpdateVehicleEntry }

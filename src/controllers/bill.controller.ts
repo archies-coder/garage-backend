@@ -1,6 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { INewBillDTO } from '../dtos/bill.dtos'
-import { createBillAndUpdateVehicleEntry, fetchAllBills, fetchBillByID } from '../services/bill.service'
+import {
+  createBillAndUpdateVehicleEntry,
+  fetchAllBills,
+  fetchBillByID,
+} from '../services/bill.service'
 
 const getAllBills = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -30,8 +34,8 @@ const createNewBill = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const newBillInput: INewBillDTO = req.body
     if (!newBillInput) return res.status(422).send('No Requst Body')
-    const newBill = await createBillAndUpdateVehicleEntry(newBillInput)
-    res.send({ data: newBill, message: 'Successfully created' })
+    const data = await createBillAndUpdateVehicleEntry(newBillInput)
+    res.send({ data, message: 'Successfully added' })
   } catch (error) {
     next(error)
   }
