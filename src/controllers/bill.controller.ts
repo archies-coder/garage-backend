@@ -4,6 +4,7 @@ import {
   createBillAndUpdateVehicleEntry,
   fetchAllBills,
   fetchBillByID,
+  fetchBillsByVehicleEntryID,
 } from '../services/bill.service'
 
 const getAllBills = async (req: Request, res: Response, next: NextFunction) => {
@@ -33,6 +34,24 @@ const getBillByID = async (req: Request, res: Response, next: NextFunction) => {
   }
 }
 
+const getAllBillsByVehicleEntryId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { vehicleEntryId } = req.params
+    if (vehicleEntryId) {
+      const data = await fetchBillsByVehicleEntryID(vehicleEntryId)
+      res.send({ data })
+    } else {
+      next('No ID provided')
+    }
+  } catch (error) {
+    next(error)
+  }
+}
+
 const createNewBill = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newBillInput: INewBillDTO = req.body
@@ -44,4 +63,4 @@ const createNewBill = async (req: Request, res: Response, next: NextFunction) =>
   }
 }
 
-export { getAllBills, getBillByID, createNewBill }
+export { getAllBills, getBillByID, createNewBill, getAllBillsByVehicleEntryId }
