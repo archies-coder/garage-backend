@@ -3,16 +3,16 @@ import userModel from '../models/user.model'
 import { ILoginDTO, IRegisterDTO } from './../dtos/auth.dtos'
 import bcrypt from 'bcrypt'
 import HttpException from '../exceptions/HttpException'
+import { HttpErrorCodes } from '../enums/statusCodes.enum'
 
 async function login(params: ILoginDTO) {
-  console.log(params)
   const user = await userModel.findOne({ username: params.username })
   if (!user) {
-    return new HttpException('Invalid Credentials', 401)
+    throw new HttpException('Invalid Credentials', HttpErrorCodes.Unauthorized)
   }
   const valid = await bcrypt.compare(params.password, user.password)
   if (!valid) {
-    return new HttpException('Invalid Credentials', 401)
+    throw new HttpException('Invalid Credentials', HttpErrorCodes.Unauthorized)
   }
   const { password, ...rest } = user
   const token = jwt.sign(
@@ -28,7 +28,7 @@ async function login(params: ILoginDTO) {
 async function createUser(params: IRegisterDTO) {
   const exists = await userModel.findOne({ username: params.username })
   if (exists) {
-    return new HttpException('Username Already Taken', 409)
+    throw new HttpException('Username Already Taken', HttpErrorCodes.Conflict)
   }
   const hashedPw = await bcrypt.hash(params.password, 12)
   const user = await userModel.create({
