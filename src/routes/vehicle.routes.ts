@@ -7,8 +7,8 @@ import {
 
 const router: Router = Router()
 
-router.get(`/garage/v1.0/vehicles`, getVehicles)
-router.get(`/garage/v1.0/vehicles/image/:id`, getVehicleImage)
-router.post('/garage/v1.0/vehicle', postVehicle)
+router.get('/vehicles', getVehicles)
+router.get('/vehicles/image/:id', getVehicleImage)
+router.post('/vehicle', postVehicle)
 
 export default router

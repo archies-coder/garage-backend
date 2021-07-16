@@ -3,16 +3,9 @@ import * as dotenv from 'dotenv'
 import express, { Application } from 'express'
 import { connect } from 'mongoose'
 import morgan from 'morgan'
-import { vehicleImageBucket } from './database/firebase'
 import { dbConnection } from './database/index'
 import { requestLoggerMiddleware } from './middlewares/reqLogging.middleware'
-import AuthRoutes from './routes/auth.routes'
-import BillRoutes from './routes/bill.routes'
-import CustomerRoutes from './routes/customer.routes'
-import SparePartRoutes from './routes/sparePart.routes'
-import StatsData from './routes/stats.routes'
-import VehicleRoutes from './routes/vehicle.routes'
-import VehicleEntryRoutes from './routes/vehicleEntry.routes'
+import Routes from './routes'
 import { stream } from './utils/logger'
 
 dotenv.config()
@@ -36,13 +29,7 @@ app.get('/', (req, res) => {
   res.send('API Working')
 })
 
-app.use(AuthRoutes)
-app.use(VehicleRoutes)
-app.use(VehicleEntryRoutes)
-app.use(BillRoutes)
-app.use(SparePartRoutes)
-app.use(StatsData)
-app.use(CustomerRoutes)
+app.use(Routes())
 
 connect(dbConnection.url, dbConnection.options)
   .then(() => {

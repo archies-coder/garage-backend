@@ -13,20 +13,18 @@ const fields = [{ name: 'vehicleImage', maxCount: 1 }]
 const imageUploads = singleImageMiddleware('vehicleImage')
 
 // Check In (Create Visitor)
-router.post(
-  '/garage/v1.0/checkin',
-  //  authMiddleware,
-  imageUploads,
-  vehicleEntryController.checkIn,
-)
+router.post('/checkin', authMiddleware, imageUploads, vehicleEntryController.checkIn)
+router.get('/checkout/:id', authMiddleware, vehicleEntryController.checkOut)
 router.get(
-  '/garage/v1.0/checkout/:id',
-  /*authMiddleware,*/ vehicleEntryController.checkOut,
-)
-router.get(
-  '/garage/v1.0/vehicle-entries' /*authMiddleware,*/,
+  '/vehicle-entries',
+  // authMiddleware,
   vehicleEntryController.getVehicleEntries,
 )
-// router.post('/garage/v1.0/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
+router.get(
+  '/purposes',
+  //  authMiddleware,
+  vehicleEntryController.getPurpose,
+)
+// router.post('/checkout' /*authMiddleware,*/, vehicleEntryController.checkOut)
 
 export default router

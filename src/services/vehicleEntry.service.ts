@@ -27,6 +27,11 @@ const fetchAll = async (order?: string) => {
   })
 }
 
+const getPurposes = async () => {
+  const resp = await vehicleEntryModel.distinct('purpose')
+  return resp
+}
+
 const doCheckIn = async (entry: IVehicleEntryDTO) => {
   // If vehicle Exists, then create just VehicleEntry, else both Vehicle and VehicleEntry
 
@@ -64,7 +69,7 @@ const filterVehicleEntries = (
   return ans
 }
 
-const getFilteredVehicleEntries = async (queries?: IFilterQueries) => {
+const getFilteredVehicleEntries = async (queries: IFilterQueries) => {
   if (queries) {
     const { page, count, vehicleEntry, purpose } = queries
     const data = await fetchAll()
@@ -148,4 +153,5 @@ export {
   getAllVehicleEntries,
   uploadVehicleImage,
   doCheckOut,
+  getPurposes,
 }

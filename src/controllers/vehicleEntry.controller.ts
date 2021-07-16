@@ -6,6 +6,7 @@ import {
   doCheckIn,
   getAllVehicleEntries,
   getFilteredVehicleEntries,
+  getPurposes,
   uploadVehicleImage,
 } from '../services/vehicleEntry.service'
 import { IVehicleDTO } from './../dtos/vehicle.dtos'
@@ -102,8 +103,10 @@ export = {
   },
 
   getPurpose: async (req: any, res: any) => {
-    const vehicleEntryPurpose = await vehicleEntryModel.distinct('purpose')
-    const purposeArr = [...vehicleEntryPurpose].flat()
-    res.send({ data: purposeArr, totalCount: purposeArr.length })
+    const vehicleEntryPurposeList = await getPurposes()
+    res.send({
+      data: vehicleEntryPurposeList,
+      totalCount: vehicleEntryPurposeList.length,
+    })
   },
 }

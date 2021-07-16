@@ -11,11 +11,9 @@ const populateBillWithvehicleDataConfig = {
 }
 
 function filterBillData(data: IBill[]) {
-  debugger
   const resp: any[] = []
   data.map(
     ({ _id, vehicleEntryId: vehicleEntryDetails, name, cost, createdAt, updatedAt }) => {
-      debugger
       if (!vehicleEntryDetails) {
         return new Error('No vehicle Entry found')
       }
@@ -43,7 +41,7 @@ function filterBillData(data: IBill[]) {
 
 const fetchAllBills = async () => {
   const allData = await billModel.find().populate(populateBillWithvehicleDataConfig)
-  debugger
+
   const data = filterBillData(allData)
   // const data = allData.map(
   //   ({ _id, vehicleEntryId: vehicleEntryDetails, name, cost, createdAt, updatedAt }) => {
@@ -93,7 +91,7 @@ const createBillAndUpdateVehicleEntry = async (input: INewBillDTO) => {
   }))
 
   const newBillsArray = await billModel.insertMany(data)
-  debugger
+
   const ids: string[] = newBillsArray.map(b => b.id)
   const updatedVehiclEntry = await vehicleEntryModel.findByIdAndUpdate(vehicleEntryId, {
     $push: {
