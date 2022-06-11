@@ -1,12 +1,13 @@
 import { NextFunction, Request, Response } from 'express'
 import { HttpErrorCodes } from '../enums/statusCodes.enum'
+import { NO_REQUEST_BODY } from './../common/consts/errors'
 import { createUser, login } from '../services/auth.service'
 import { ILoginDTO, IRegisterDTO } from './../dtos/auth.dtos'
 
 const doLogin = async (req: Request, res: Response, next: NextFunction) => {
   const loginInput: ILoginDTO = req.body
   try {
-    const data = await login(loginInput)
+    const data = await login(req.body)
     res.send({
       ...data,
     })

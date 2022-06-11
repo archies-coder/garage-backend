@@ -16,13 +16,9 @@ const fetchAll = async (date?: any) => {
     referenceDate.getMonth(),
     referenceDate.getDate(),
   )
-  const days = [
-    new Date(subDays(new Date(), 0).setUTCHours(0, 0, 0, 0)).toISOString(),
-    new Date(subDays(new Date(), 1).setUTCHours(0, 0, 0, 0)).toISOString(),
-    new Date(subDays(new Date(), 2).setUTCHours(0, 0, 0, 0)).toISOString(),
-    new Date(subDays(new Date(), 3).setUTCHours(0, 0, 0, 0)).toISOString(),
-    new Date(subDays(new Date(), 4).setUTCHours(0, 0, 0, 0)).toISOString(),
-  ]
+  const days = [...Array(5)].map((_, index) =>
+    new Date(subDays(new Date(), index).setUTCHours(0, 0, 0, 0)).toISOString(),
+  )
   const vehicleEntriesByDay: number[] = []
   days.map(async (element, i) => {
     vehicleEntriesByDay[i] =
@@ -32,6 +28,7 @@ const fetchAll = async (date?: any) => {
           $lt: addDays(new Date(element), 1).toISOString(),
         },
       })) || 0
+    return data
   })
 
   const data: IStat = {

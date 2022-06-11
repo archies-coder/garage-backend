@@ -1,7 +1,6 @@
-import { IBill } from './../models/bill.model'
 import { ICreateNewBill } from './../dtos/bill.dtos'
 import { INewBillDTO } from '../dtos/bill.dtos'
-import billModel from '../models/bill.model'
+import billModel, { IBill } from '../models/bill.model'
 import vehicleEntryModel from '../models/vehicleEntry.model'
 
 const populateBillWithvehicleDataConfig = {
@@ -42,32 +41,31 @@ function filterBillData(data: IBill[]) {
 const fetchAllBills = async () => {
   const allData = await billModel.find().populate(populateBillWithvehicleDataConfig)
 
-  const data = filterBillData(allData)
-  // const data = allData.map(
-  //   ({ _id, vehicleEntryId: vehicleEntryDetails, name, cost, createdAt, updatedAt }) => {
-  //     if (!vehicleEntryDetails) {
-  //       return new Error('No vehicle Entry found')
-  //     }
-  //     const { _id: vehicleEntryId } = vehicleEntryDetails
-  //     const {
-  //       customerName,
-  //       customerAddress,
-  //       customerMobile,
-  //     } = vehicleEntryDetails.vehicleId.customer
-  //     return {
-  //       _id,
-  //       vehicleEntryId,
-  //       customerName,
-  //       customerAddress,
-  //       customerMobile,
-  //       name,
-  //       cost,
-  //       createdAt,
-  //       updatedAt,
-  //     }
-  //   },
-  // )
-  return data
+  return filterBillData(allData)
+}
+const formatBills = (bills: IBill[]) => {
+  return bills.map(item => {
+    const {
+      _id,
+      vehicleEntryId: { _id: vehicleEntryId, vehicleId },
+      name,
+      cost,
+      createdAt,
+      updatedAt,
+    } = item
+    const { customerName, customerAddress, customerMobile } = vehicleId.customer
+    return {
+      _id,
+      vehicleEntryId,
+      customerName,
+      customerAddress,
+      customerMobile,
+      name,
+      cost,
+      createdAt,
+      updatedAt,
+    }
+  })
 }
 
 const fetchBillByID = async (id: string) => {

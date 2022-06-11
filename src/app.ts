@@ -4,9 +4,16 @@ import express, { Application } from 'express'
 import { connect } from 'mongoose'
 import morgan from 'morgan'
 import { dbConnection } from './database/index'
-import { requestLoggerMiddleware } from './middlewares/reqLogging.middleware'
 import Routes from './routes'
 import { stream } from './utils/logger'
+import { requestLoggerMiddleware } from './middlewares/reqLogging.middleware'
+import AuthRoutes from './routes/auth.routes'
+import BillRoutes from './routes/bill.routes'
+import CustomerRoutes from './routes/customer.routes'
+import SparePartRoutes from './routes/sparePart.routes'
+import StatsData from './routes/stats.routes'
+import VehicleRoutes from './routes/vehicle.routes'
+import VehicleEntryRoutes from './routes/vehicleEntry.routes'
 
 dotenv.config()
 
@@ -22,8 +29,8 @@ app.use(
 )
 app.use(express.json())
 app.use(cors())
-app.use(morgan('dev', { stream }))
-app.use(requestLoggerMiddleware)
+// app.use(morgan('dev', { stream }))
+// app.use(requestLoggerMiddleware)
 
 app.get('/', (req, res) => {
   res.send('API Working')
@@ -31,13 +38,13 @@ app.get('/', (req, res) => {
 
 app.use(Routes())
 
-connect(dbConnection.url, dbConnection.options)
-  .then(() => {
-    console.log('🟢 The database is connected.')
-  })
-  .catch(error => {
-    console.log(`🔴 Unable to connect to the database: ${error}.`)
-  })
+// connect(dbConnection.url, dbConnection.options)
+//   .then(() => {
+//     console.log('🟢 The database is connected.')
+//   })
+//   .catch(error => {
+//     console.log(`🔴 Unable to connect to the database: ${error}.`)
+//   })
 
 const PORT = process.env.PORT || 8080
 

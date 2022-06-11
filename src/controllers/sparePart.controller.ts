@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { createNewSparePart, fetchAll } from '../services/sparePart.service'
+import { createOrUpdateSparePart, fetchAll } from '../services/sparePart.service'
 import { ISparePartDTO } from '../dtos/sparePart.dtos'
 
 const getSpareParts = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,7 @@ const postSparePart = async (req: Request, res: Response) => {
   if (!sparePartInput) return res.status(422).send('No Requst Body')
   try {
     // TODO check if already exists, if so, update existing
-    const sparePart = await createNewSparePart(sparePartInput)
+    const sparePart = await createOrUpdateSparePart(sparePartInput)
     res.send({
       data: sparePart,
     })

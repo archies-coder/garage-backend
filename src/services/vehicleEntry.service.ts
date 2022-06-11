@@ -1,3 +1,4 @@
+import { DATABASE_ERRORS } from './../common/consts/errors'
 import * as uuid from 'uuid'
 import HttpException from '../exceptions/HttpException'
 import { uploadImageToStorage } from '../middlewares/imageUpload.middleware'
@@ -14,12 +15,7 @@ interface IFilterQueries {
   purpose?: string
 }
 
-const fetchAll = async (order?: string) => {
-  // return order === 'DESC'
-  //   ? await VehicleModel.find({}).sort({ _id: -1 })
-  //   : order === 'ASC'
-  //   ? await VehicleModel.find({}).sort({ _id: 1 })
-  //   : await VehicleModel.find({})
+const fetchAll = async () => {
   return await vehicleEntryModel.find().populate({
     path: 'vehicleId',
     select:
@@ -40,7 +36,7 @@ const doCheckIn = async (entry: IVehicleEntryDTO) => {
     const createdVehicleEntry = await vehicleEntryModel.create(entry)
     return createdVehicleEntry
   } catch (error) {
-    return new Error('could not add to database')
+    return new Error(DATABASE_ERRORS.ADD_FAILED)
   }
 }
 

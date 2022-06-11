@@ -53,7 +53,7 @@ const createNewVehicle = async (vehicle: IVehicleDTO) => {
     vehicleType,
     vehicleImagePath,
   })
-  console.log(newVehicle)
+  // TODO use mongoose to add customer
   newVehicle.customer = {
     customerName,
     customerMobile,
